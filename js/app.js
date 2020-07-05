@@ -32,7 +32,7 @@ function checkGuess() {
     }
     let guess = document.getElementById("guess");
     console.log(`checkGuess: guess=${guess.value}`);
-    const win = guess.value === RANDOM;
+    const win = guess.value == RANDOM;
     attempts--;
     document.getElementById("message").innerHTML = win ? `Correct. You won` : `Your Guess is Wrong. Try Again. ${attempts} attempts left.`;
     if (attempts === 0 || win) {
