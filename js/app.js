@@ -8,24 +8,29 @@ const DEFAULT_MAX_NUMBER = 9;
 const DEFAULT_ATTEMPTS = 3;
 
 let guessField;
+let gameHeader;
 
 
 const GAME_SETUP = {
     minNumber : DEFAULT_MIN_NUMBER,
     maxNumber : DEFAULT_MAX_NUMBER,
     attempts : DEFAULT_ATTEMPTS,
-    gameOver : false,
     randomValue : 0,
     setGuess : function () {
-        this.randomValue = Math.floor(Math.random() * (this.maxNumber - this.minNumber)) + this.minNumber;
+        this.randomValue = Math.floor(Math.random() * (this.maxNumber - this.minNumber + 1)) + this.minNumber;
     }
 };
 
+const GAME = {
+    attemptsLeft : DEFAULT_ATTEMPTS,
+    gameOver : false
+};
+
 const GAME_MESSAGES = {
-    win : () =>`You won. Correct is ${GAME_SETUP.randomValue}`,
-    loose : () => `Game Over. Correct number is ${GAME_SETUP.randomValue}. Good luck next time!`,
-    tryAgain : () => `Your Guess is Wrong. Try Again. ${GAME_SETUP.attempts} attempts left.`,
-    start: () => `Guess Number. You have ${GAME_SETUP.attempts} attempts left.`
+    win : () =>`<h3>Congrats!!!! You won.</h3><h6>Correct is ${GAME_SETUP.randomValue}</h6>`,
+    loose : () => `<h3>Game Over. </h3><h6>Correct number is ${GAME_SETUP.randomValue}.</h6><h6>Good luck next time!</h6>`,
+    tryAgain : () => `<h6>Your Guess is Wrong. Try Again. </h6><h6>${GAME.attemptsLeft} attempts left.</h6>`,
+    start: () => `<h6>Guess Number.</h6><h6>You have ${GAME.attemptsLeft} attempts left.</h6>`
 };
 
 init();
@@ -42,10 +47,19 @@ function loadGame() {
     // Settings management
     document.getElementById("save").addEventListener("click", saveSettings);
     guessField = document.getElementById("guess");
+    gameHeader = document.getElementById("gameHeader");
     startGame();
 }
 
 function startGame() {
+
+    switchStartOverAndCheckButtons("REPLAY");
+   // GAME_SETUP.set TODO fix attempts
+    GAME_SETUP.setGuess();
+    GAME.gameOver = false;
+    GAME.attemptsLeft = GAME_SETUP.attempts;
+    guessField.style.display = "block";
+    gameHeader.style.display = "block";
 
     document.getElementById("settingsMinNumber").value = GAME_SETUP.minNumber;
     document.getElementById("settingsMaxNumber").value = GAME_SETUP.maxNumber;
@@ -54,12 +68,6 @@ function startGame() {
     document.getElementById("minNumber").innerHTML = GAME_SETUP.minNumber;
     document.getElementById("maxNumber").innerHTML = GAME_SETUP.maxNumber;
     document.getElementById("message").innerHTML = GAME_MESSAGES.start();
-
-    switchStartOverAndCheckButtons("REPLAY");
-   // GAME_SETUP.set TODO fix attempts
-    GAME_SETUP.setGuess();
-    GAME_SETUP.gameOver = false;
-    guessField.disabled = false;
 }
 
 function switchStartOverAndCheckButtons(status) {
@@ -77,20 +85,20 @@ function switchStartOverAndCheckButtons(status) {
 
 
 function checkGuess() {
-    if (GAME_SETUP.gameOver) {
+    if (GAME.gameOver) {
         return;
     }
     console.log(`checkGuess: guess=${guessField.value}`);
     const win = Number(guessField.value) === GAME_SETUP.randomValue;
     guessField.value = '';
-    GAME_SETUP.attempts--;
+    GAME.attemptsLeft--;
     document.getElementById("message").innerHTML = win ?
         GAME_MESSAGES.win() :
-        (GAME_SETUP.attempts === 0 ? GAME_MESSAGES.loose() : GAME_MESSAGES.tryAgain());
+        ( GAME.attemptsLeft === 0 ? GAME_MESSAGES.loose() : GAME_MESSAGES.tryAgain());
 
-    if (GAME_SETUP.attempts === 0 || win) {
-        GAME_SETUP.gameOver = true;
-        guessField.disabled = true;
+    if (GAME.attemptsLeft === 0 || win) {
+        GAME.gameOver = true;
+        gameHeader.style.display = "none";
         switchStartOverAndCheckButtons("START_OVER");
     }
 

@@ -25,11 +25,17 @@
             <div class="col s8">
                 <div class="card blue-grey darken-1">
                     <div id="game" class="card-content white-text">
-                        <p>Guess a number between <span id="minNumber">0</span> and <span id="maxNumber">10</span></p>
-                        <input type="number" placeholder="Enter your guess..." id="guess" class="white-text">
-                        <input type="submit" value="Check" class="btn" id="submit">
-                        <input type="submit" value="Play" class="btn" id="play">
-                        <p class="message" id="message"></p>
+                        <div id="gameHeader" class="row">
+                            <p id="gameHint">Guess a number between <span id="minNumber">0</span> and <span id="maxNumber">10</span></p>
+                            <input type="number" placeholder="Enter your guess..." id="guess" class="white-text">
+                        </div>
+                        <div class="row">
+                            <input type="submit" value="Check" class="btn" id="submit">
+                        </div>
+                        <div class="row message" id="message"></div>
+                        <div class="row">
+                            <input type="submit" value="Play Again" class="btn col s12" id="play">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,8 +44,8 @@
                 <div class="card blue-grey darken-1">
                     <div id="settings" class="card-content white-text">
                         <div class="row">
-                            <div class="col s4"><i class="material-icons dp48">settings</i></div>
-                            <div class="col s8">Settings</div>
+                            <h5 class="col s4"><i class="material-icons dp48">settings</i></h5>
+                            <h5 class="col s8">Settings</h5>
                         </div>
                         <input type="number" placeholder="Enter min number" id="settingsMinNumber" name="settingsMinNumber" class="white-text">
                         <label for="settingsMinNumber">Min number</label>
@@ -52,7 +58,7 @@
                         <div class="row">
                             <input type="submit" value="Save & Play" class="btn col s12" id="save">
                         </div>
-                        <p class="message" id="settingsErrorMessage"></p>
+                        <h5 class="message" id="settingsErrorMessage"></h5>
                     </div>
                 </div>
             </div>
